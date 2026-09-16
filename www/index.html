@@ -3544,6 +3544,9 @@
         <div class="menu-item admin-only" onclick="showTab('users', this)" id="menuItemUsers">
             <div class="menu-item-left"><i class="fas fa-users-cog" style="color:#6366f1;"></i><span style="color:#6366f1; font-weight:700;">إدارة المستخدمين</span></div>
         </div>
+        <div class="menu-item admin-only" onclick="openOfficeSettingsModal()" id="menuItemOfficeSettings">
+            <div class="menu-item-left"><i class="fas fa-sliders-h" style="color:var(--gold-primary);"></i><span>إعدادات المكتب والترويسة</span></div>
+        </div>
     </div>
 
     <div class="sidebar-footer">
@@ -3591,32 +3594,6 @@
             <button class="btn btn-secondary admin-only admin-only-inline-flex" onclick="exportToCSV()" title="تصدير CSV"><i class="fas fa-file-csv"></i> CSV</button>
             <button class="btn btn-whatsapp" onclick="openBulkWhatsAppModal()"><i class="fab fa-whatsapp"></i> رسائل واتساب (<span id="selectedCountBadge">0</span>)</button>
             <button class="btn btn-secondary" onclick="openBadgeModal()"><i class="fas fa-id-badge"></i> بطاقات المعتمرين (Badges)</button>
-
-            <!-- User Badge -->
-            <div class="user-badge" id="userBadge" onclick="toggleUserDropdown()">
-                <div class="user-avatar" id="userAvatarInitials">م</div>
-                <div class="user-info-text">
-                    <span class="user-name" id="topBarUserName">المستخدم</span>
-                    <span class="user-role-label" id="topBarUserRole">مدير</span>
-                </div>
-                <div class="user-dropdown" id="userDropdown">
-                    <div class="user-dropdown-item admin-only" onclick="event.stopPropagation(); showTab('users', document.getElementById('menuItemUsers'))">
-                        <i class="fas fa-users-cog"></i> إدارة المستخدمين
-                    </div>
-                    <div class="user-dropdown-item admin-only" onclick="event.stopPropagation(); openOfficeSettingsModal()">
-                        <i class="fas fa-sliders-h"></i> إعدادات المكتب والترويسة
-                    </div>
-                    <div class="user-dropdown-item" onclick="event.stopPropagation(); openChangePasswordModal()">
-                        <i class="fas fa-key"></i> تغيير كلمة المرور
-                    </div>
-                    <div class="user-dropdown-item" onclick="event.stopPropagation(); lockScreen()">
-                        <i class="fas fa-lock"></i> قفل الشاشة (Lock)
-                    </div>
-                    <div class="user-dropdown-item danger" onclick="event.stopPropagation(); handleLogout()">
-                        <i class="fas fa-sign-out-alt"></i> تسجيل الخروج
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 
@@ -3906,9 +3883,14 @@
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; flex-wrap:wrap; gap:12px;">
             <div>
                 <h2 style="color:#6366f1; font-size:1.3em; margin:0;"><i class="fas fa-users-cog"></i> إدارة المستخدمين</h2>
-                <p style="color:var(--text-secondary); font-size:0.85em; margin:4px 0 0;">إنشاء حسابات الموظفين وتعديل صلاحياتهم</p>
+                <p style="color:var(--text-secondary); font-size:0.85em; margin:4px 0 0;">إنشاء حسابات الموظفين، إعدادات المكتب، وتعديل الصلاحيات</p>
             </div>
-            <button class="btn btn-gold" onclick="openAddUserModal()"><i class="fas fa-user-plus"></i> إضافة مستخدم جديد</button>
+            <div style="display:flex; gap:10px; flex-wrap:wrap;">
+                <button class="btn btn-secondary" onclick="openOfficeSettingsModal()"><i class="fas fa-sliders-h"></i> إعدادات المكتب والترويسة</button>
+                <button class="btn btn-secondary" onclick="openChangePasswordModal()"><i class="fas fa-key"></i> تغيير كلمة المرور</button>
+                <button class="btn btn-secondary" onclick="lockScreen()"><i class="fas fa-lock"></i> قفل الشاشة</button>
+                <button class="btn btn-gold" onclick="openAddUserModal()"><i class="fas fa-user-plus"></i> إضافة مستخدم جديد</button>
+            </div>
         </div>
         <div class="users-grid" id="usersGrid">
             <!-- Users will be rendered here dynamically -->
