@@ -1,0 +1,46 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // يجب أن يكون المستخدم مسجلاً
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    // التحقق من دور المدير
+    function isAdmin() {
+      return isAuthenticated() &&
+             get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    }
+
+    // التحقق من أن الحساب فعال
+    function isActiveUser() {
+      return isAuthenticated() &&
+             get(/databases/$(database)/documents/users/$(request.auth.uid)).data.isActive == true;
+    }
+
+    // بيانات الحجاج
+    match /pilgrims/{pilgrimId} {
+      allow read: if isActiveUser();
+      allow create, update: if isActiveUser();
+      allow delete: if isAdmin();
+    }
+
+    // إدارة المستخدمين
+    match /users/{userId} {
+      allow read: if isActiveUser();
+      allow create, update, delete: if isAdmin();
+      // السماح للمستخدم بتحديث lastLogin الخاص به
+      allow update: if isAuthenticated() &&
+                       request.auth.uid == userId &&
+                       request.resource.data.diff(resource.data).affectedKeys().hasOnly(['lastLogin']);
+    }
+
+    // سجل العمليات
+    match /audit_log/{logId} {
+      allow read: if isAdmin();
+      allow create: if isActiveUser();
+      allow update, delete: if false; // لا يمكن تعديل أو حذف السجلات
+    }
+  }
+}

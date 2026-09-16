@@ -1,0 +1,10 @@
+node_modules
+.vercel
+release
+dist
+android/app/build
+android/.gradle
+android/build
+*.log
+.gemini
+*.bak*

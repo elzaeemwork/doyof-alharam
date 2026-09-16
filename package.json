@@ -1,0 +1,85 @@
+{
+  "name": "doyof-alharam",
+  "version": "2.0.0",
+  "description": "منظومة ضيوف الحرم لإدارة العمرة والحملات والمانفيست",
+  "main": "main.js",
+  "author": "ضيوف الحرم",
+  "license": "UNLICENSED",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder build --win",
+    "build:portable": "electron-builder build --win portable",
+    "build:installer": "electron-builder build --win nsis",
+    "build:all": "electron-builder build --win nsis portable",
+    "publish:release": "electron-builder build --win --publish always"
+  },
+  "build": {
+    "appId": "com.doyofalharam.app",
+    "productName": "ضيوف الحرم",
+    "copyright": "Copyright © 2026 ضيوف الحرم",
+    "publish": {
+      "provider": "github",
+      "owner": "elzaeemwork",
+      "repo": "doyof-alharam"
+    },
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "main.js",
+      "index.html",
+      "splash.html",
+      "icons/**/*",
+      "assets/**/*"
+    ],
+    "asarUnpack": [
+      "assets/ocr/**/*",
+      "node_modules/**/*"
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "icons/icon.ico",
+      "publisherName": "ضيوف الحرم"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "include": "build/installer.nsh",
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "ضيوف الحرم",
+      "uninstallDisplayName": "ضيوف الحرم"
+    },
+    "portable": {
+      "splashImage": "icons/splash.bmp",
+      "unpackDirName": "doyof-alharam-portable"
+    }
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^8.5.1",
+    "electron": "^33.3.1",
+    "electron-builder": "^25.1.8"
+  },
+  "dependencies": {
+    "@capacitor/android": "^8.5.1",
+    "@capacitor/camera": "^8.2.4",
+    "@capacitor/core": "^8.5.1",
+    "electron-updater": "^6.3.9",
+    "qrcode": "^1.5.4",
+    "tesseract.js": "^7.0.0"
+  }
+}

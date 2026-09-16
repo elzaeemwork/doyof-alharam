@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>ضيوف الحرم — جاري التحميل</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Cairo', -apple-system, BlinkMacSystemFont, 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a0f1d 0%, #0f172a 40%, #172554 80%, #0a0f1d 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            -webkit-app-region: drag;
+            user-select: none;
+            padding: 24px;
+            color: #f8fafc;
+        }
+
+        /* Animated background particles */
+        .particles {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 1;
+        }
+        .particle {
+            position: absolute;
+            width: 4px; height: 4px;
+            background: rgba(197, 160, 89, 0.4);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+        .particle:nth-child(1) { top: 15%; left: 10%; animation-delay: 0s; animation-duration: 5s; }
+        .particle:nth-child(2) { top: 70%; left: 85%; animation-delay: 1s; animation-duration: 7s; }
+        .particle:nth-child(3) { top: 40%; left: 20%; animation-delay: 2s; animation-duration: 6s; }
+        .particle:nth-child(4) { top: 85%; left: 45%; animation-delay: 0.5s; animation-duration: 8s; }
+        .particle:nth-child(5) { top: 20%; left: 75%; animation-delay: 3s; animation-duration: 5.5s; }
+        .particle:nth-child(6) { top: 60%; left: 15%; animation-delay: 1.5s; animation-duration: 6.5s; }
+        .particle:nth-child(7) { top: 30%; left: 90%; animation-delay: 2.5s; animation-duration: 7.5s; }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) scale(1); opacity: 0.3; }
+            50% { transform: translateY(-25px) scale(1.6); opacity: 0.85; }
+        }
+
+        /* Main Container */
+        .splash-content {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            width: 100%;
+            max-width: 460px;
+        }
+
+        /* Logo Area */
+        .splash-logo {
+            width: 74px; height: 74px;
+            background: linear-gradient(135deg, #d4af37 0%, #c5a059 50%, #996515 100%);
+            border-radius: 20px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 2.4em;
+            color: #ffffff;
+            box-shadow: 0 10px 35px rgba(212, 175, 55, 0.4), 0 0 20px rgba(197, 160, 89, 0.2);
+            animation: logoPulse 2.5s ease-in-out infinite alternate;
+            margin-bottom: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+        }
+        @keyframes logoPulse {
+            0% { transform: scale(1); box-shadow: 0 10px 35px rgba(212, 175, 55, 0.35); }
+            100% { transform: scale(1.04); box-shadow: 0 14px 45px rgba(212, 175, 55, 0.55), 0 0 30px rgba(197, 160, 89, 0.3); }
+        }
+
+        .splash-title {
+            font-size: 1.6em;
+            font-weight: 900;
+            background: linear-gradient(135deg, #c5a059 0%, #fdfbf7 50%, #d4af37 100%);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shimmer 3s linear infinite;
+            margin-bottom: 2px;
+            letter-spacing: -0.5px;
+        }
+        @keyframes shimmer {
+            0% { background-position: 0% center; }
+            100% { background-position: 200% center; }
+        }
+
+        .splash-subtitle {
+            color: #94a3b8;
+            font-size: 0.82em;
+            font-weight: 600;
+            margin-bottom: 18px;
+        }
+
+        /* Developer Announcement Card */
+        .dev-card {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(197, 160, 89, 0.35);
+            border-radius: 16px;
+            padding: 16px 20px;
+            margin-bottom: 20px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+        .dev-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.15), transparent);
+            animation: shine 4s infinite;
+        }
+        @keyframes shine {
+            0% { left: -100%; }
+            40%, 100% { left: 100%; }
+        }
+
+        .dev-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(197, 160, 89, 0.15);
+            border: 1px solid rgba(197, 160, 89, 0.4);
+            color: #f1d58e;
+            padding: 3px 12px;
+            border-radius: 20px;
+            font-size: 0.72em;
+            font-weight: 700;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+        }
+
+        .dev-name-ar {
+            font-size: 1.25em;
+            font-weight: 800;
+            color: #ffffff;
+            margin-bottom: 2px;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+        }
+        .dev-name-en {
+            font-size: 0.75em;
+            font-weight: 600;
+            color: #cbd5e1;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+        }
+
+        .dev-desc {
+            font-size: 0.78em;
+            color: #94a3b8;
+            line-height: 1.4;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            padding-top: 8px;
+            margin-top: 4px;
+        }
+        .dev-desc span {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .dev-desc i, .dev-desc svg {
+            color: #c5a059;
+            fill: #c5a059;
+            font-size: 0.9em;
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        /* Loading section */
+        .loading-container {
+            width: 260px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 4px;
+            overflow: hidden;
+            position: relative;
+            margin-bottom: 10px;
+        }
+        .loading-bar {
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(90deg, #c5a059, #f5eedf, #c5a059);
+            background-size: 200% 100%;
+            border-radius: 4px;
+            animation: loading 1.4s ease-in-out infinite;
+        }
+        @keyframes loading {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(300%); }
+        }
+
+        .loading-text {
+            color: #64748b;
+            font-size: 0.76em;
+            font-weight: 600;
+        }
+
+        .footer-tag {
+            margin-top: 14px;
+            font-size: 0.68em;
+            color: #475569;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .footer-tag .dot {
+            width: 5px; height: 5px;
+            background: #10b981;
+            border-radius: 50%;
+            box-shadow: 0 0 6px #10b981;
+        }
+    </style>
+</head>
+<body>
+    <div class="particles">
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+    </div>
+
+    <div class="splash-content">
+        <!-- Kaaba App Logo SVG -->
+        <div class="splash-logo">
+            <svg viewBox="0 0 64 64" width="46" height="46" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <polygon points="32,8 54,18 32,28 10,18" fill="#1e293b" stroke="#f1d58e" stroke-width="1.8"/>
+                <polygon points="10,18 32,28 32,56 10,46" fill="#0f172a" stroke="#f1d58e" stroke-width="1.8"/>
+                <polygon points="32,28 54,18 54,46 32,56" fill="#1e293b" stroke="#f1d58e" stroke-width="1.8"/>
+                <polygon points="10,24 32,34 32,38 10,28" fill="#d4af37"/>
+                <polygon points="32,34 54,24 54,28 32,38" fill="#f1d58e"/>
+                <polygon points="37,39 45,35 45,50 37,54" fill="#eab308" stroke="#ca8a04" stroke-width="0.8"/>
+            </svg>
+        </div>
+
+        <h1 class="splash-title">ضيوف الحرم</h1>
+        <p class="splash-subtitle">منظومة إدارة الرحلات والمانفيست السحابية</p>
+
+        <!-- Developer Advertisement Card -->
+        <div class="dev-card">
+            <div class="dev-badge">
+                <svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor" style="vertical-align:middle;"><path d="M9.4 16.6L4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4zm5.2 0l4.6-4.6-4.6-4.6L16 6l6 6-6 6-1.4-1.4z"/></svg>
+                تصميم وتطوير وبرمجة
+            </div>
+            <div class="dev-name-ar">يوسف محمد الجوباني</div>
+            <div class="dev-name-en">Yousef Mohammed Al-Jobani</div>
+            <div class="dev-desc">
+                <span>
+                    <svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor"><path d="M20 18c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2H0v2h24v-2h-4zM4 6h16v10H4V6z"/></svg>
+                    حلول برمجية متقدمة
+                </span>
+                <span>
+                    <svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg>
+                    أنظمة سحابية متكاملة
+                </span>
+            </div>
+        </div>
+
+        <!-- Progress Loading Bar -->
+        <div class="loading-container">
+            <div class="loading-bar"></div>
+        </div>
+        <div class="loading-text">جاري تشغيل النظام والاتصال بالسحابة...</div>
+
+        <div class="footer-tag">
+            <span class="dot"></span>
+            <span>الإصدار المعتمد v2.0 • جميع الحقوق محفوظة للمطور</span>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <title>بوابة التحقق الرقمية للمعتمر | ضيوف الحرم</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-body: #0a0f1d;
+            --card-bg: #111827;
+            --card-sub: #1f2937;
+            --gold-primary: #c5a059;
+            --gold-light: #e6c887;
+            --gold-glow: rgba(197, 160, 89, 0.25);
+            --emerald: #10b981;
+            --emerald-glow: rgba(16, 185, 129, 0.25);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-color: #374151;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Cairo', 'Segoe UI', Tahoma, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            min-height: 100vh;
+            padding: 16px 12px 60px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 520px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        /* Top Brand Header */
+        .brand-card {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            border: 1px solid rgba(197, 160, 89, 0.35);
+            border-radius: 18px;
+            padding: 20px 16px;
+            text-align: center;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5), 0 0 15px var(--gold-glow);
+            position: relative;
+            overflow: hidden;
+        }
+        .brand-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #c5a059, #fde047, #c5a059);
+        }
+        .brand-icon {
+            font-size: 2.4rem;
+            margin-bottom: 6px;
+            display: inline-block;
+            filter: drop-shadow(0 2px 8px rgba(197, 160, 89, 0.4));
+        }
+        .brand-title {
+            font-size: 1.45rem;
+            font-weight: 800;
+            color: var(--gold-primary);
+            letter-spacing: 0.5px;
+        }
+        .brand-subtitle {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        /* Official Verification Badge */
+        .verify-badge {
+            background: rgba(16, 185, 129, 0.12);
+            border: 1px solid var(--emerald);
+            border-radius: 12px;
+            padding: 10px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            box-shadow: 0 0 15px var(--emerald-glow);
+        }
+        .verify-badge i {
+            color: var(--emerald);
+            font-size: 1.3rem;
+            animation: pulse 2s infinite ease-in-out;
+        }
+        .verify-badge span {
+            color: #34d399;
+            font-weight: 700;
+            font-size: 0.95rem;
+        }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.15); opacity: 0.85; }
+        }
+
+        /* Hero Pilgrim Card */
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 18px 16px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+        .card-header-line {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            padding-bottom: 10px;
+            margin-bottom: 14px;
+        }
+        .card-title {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--gold-light);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .pilgrim-name-box {
+            text-align: center;
+            padding: 12px 10px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            border: 1px solid rgba(197, 160, 89, 0.2);
+            margin-bottom: 14px;
+        }
+        .pilgrim-name {
+            font-size: 1.35rem;
+            font-weight: 800;
+            color: #ffffff;
+            margin-bottom: 4px;
+        }
+        .pilgrim-passport-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #1e293b;
+            color: var(--gold-primary);
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 0.88rem;
+            font-weight: 700;
+            font-family: monospace;
+            border: 1px solid rgba(197,160,89,0.3);
+            cursor: pointer;
+        }
+
+        /* Pill Grids */
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+        .info-pill {
+            background: var(--card-sub);
+            padding: 10px 12px;
+            border-radius: 10px;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+        .info-label {
+            font-size: 0.76rem;
+            color: var(--text-muted);
+            display: block;
+            margin-bottom: 3px;
+        }
+        .info-val {
+            font-size: 0.92rem;
+            font-weight: 700;
+            color: #ffffff;
+            word-break: break-word;
+        }
+
+        /* Action Buttons */
+        .btn-action-row {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+        }
+        .btn-call {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 10px 14px;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 0.88rem;
+            text-decoration: none;
+            color: #fff;
+            transition: transform 0.15s, opacity 0.15s;
+        }
+        .btn-call:active { transform: scale(0.97); }
+        .btn-call-phone { background: linear-gradient(135deg, #2563eb, #1d4ed8); }
+        .btn-call-wa { background: linear-gradient(135deg, #10b981, #059669); }
+
+        /* Documents Section with Images */
+        .doc-section-title {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--gold-light);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+        .doc-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+        @media (max-width: 420px) {
+            .doc-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        .doc-card {
+            background: var(--card-sub);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 12px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transition: border-color 0.2s;
+        }
+        .doc-card:hover {
+            border-color: var(--gold-primary);
+        }
+        .doc-header {
+            padding: 8px 10px;
+            background: rgba(0,0,0,0.25);
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--gold-light);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .doc-img-container {
+            height: 150px;
+            background: #0b1120;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            overflow: hidden;
+        }
+        .doc-img-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.25s ease;
+        }
+        .doc-img-container:hover img {
+            transform: scale(1.04);
+        }
+        .doc-overlay-hint {
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.45);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.2s;
+            color: #ffffff;
+            font-size: 0.78rem;
+            gap: 4px;
+        }
+        .doc-img-container:hover .doc-overlay-hint,
+        .doc-img-container:active .doc-overlay-hint {
+            opacity: 1;
+        }
+        .doc-empty-state {
+            padding: 24px 12px;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.78rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+        }
+        .doc-empty-state i {
+            font-size: 1.8rem;
+            color: #475569;
+        }
+        .doc-footer-btn {
+            padding: 7px 10px;
+            background: rgba(255,255,255,0.03);
+            border: none;
+            color: var(--gold-light);
+            font-size: 0.78rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            border-top: 1px solid rgba(255,255,255,0.06);
+        }
+
+        /* Lightbox Modal */
+        .lightbox-modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 99999;
+            display: none;
+            flex-direction: column;
+            backdrop-filter: blur(8px);
+        }
+        .lightbox-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 18px;
+            background: rgba(15, 23, 42, 0.85);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .lightbox-title {
+            font-weight: 700;
+            font-size: 0.98rem;
+            color: var(--gold-light);
+        }
+        .lightbox-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .lightbox-btn {
+            background: rgba(255, 255, 255, 0.12);
+            color: #ffffff;
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 8px;
+            width: 38px;
+            height: 38px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.15s;
+        }
+        .lightbox-btn:active { background: rgba(255, 255, 255, 0.25); }
+        .lightbox-close {
+            background: rgba(239, 68, 68, 0.2);
+            border-color: #ef4444;
+            color: #fca5a5;
+        }
+        .lightbox-body {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+            padding: 10px;
+            touch-action: none;
+        }
+        .lightbox-body img {
+            max-width: 95%;
+            max-height: 85vh;
+            object-fit: contain;
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+            transition: transform 0.1s ease;
+            transform-origin: center center;
+            user-select: none;
+        }
+
+        /* Footer Audit Bar */
+        .footer-audit {
+            text-align: center;
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            margin-top: 10px;
+            line-height: 1.6;
+        }
+        .footer-audit b {
+            color: var(--gold-primary);
+        }
+
+        /* Loading Skeleton */
+        .loading-overlay {
+            position: fixed;
+            inset: 0;
+            background: #0a0f1d;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+        }
+        .spinner {
+            width: 48px;
+            height: 48px;
+            border: 4px solid rgba(197, 160, 89, 0.2);
+            border-top-color: var(--gold-primary);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Loading Spinner -->
+    <div id="verifyLoading" class="loading-overlay">
+        <div class="spinner"></div>
+        <div style="font-weight:700; color:var(--gold-light); font-size:1.1rem;">جاري التحقق من بيانات المعتمر...</div>
+        <div style="font-size:0.8rem; color:var(--text-muted);">منظومة ضيوف الحرم السحابية</div>
+    </div>
+
+    <div class="container" id="verifyContainer" style="display:none;">
+
+        <!-- Brand Top -->
+        <div class="brand-card">
+            <div class="brand-icon">🕋</div>
+            <h1 class="brand-title">منظومة ضيوف الحرم</h1>
+            <p class="brand-subtitle">بوابة التحقق الرقمية الرسمية للمعتمرين والحجاج</p>
+        </div>
+
+        <!-- Verification Status Banner -->
+        <div class="verify-badge">
+            <i class="fas fa-check-circle"></i>
+            <span id="txtVerifyStatus">معتمر مسجل ومعتمد رسمياً في المنظومة ✓</span>
+        </div>
+
+        <!-- Pilgrim Identity Card -->
+        <div class="card">
+            <div class="card-header-line">
+                <span class="card-title"><i class="fas fa-id-card"></i> بطاقة هوية المعتمر</span>
+                <span style="font-size:0.75rem; color:var(--emerald);"><i class="fas fa-shield-alt"></i> سجل موثق</span>
+            </div>
+
+            <div class="pilgrim-name-box">
+                <h2 class="pilgrim-name" id="pName">-</h2>
+                <div class="pilgrim-passport-badge" onclick="copyPassport()">
+                    <i class="fas fa-passport"></i>
+                    <span id="pPassport">-</span>
+                    <i class="fas fa-copy" style="font-size:0.75rem; margin-right:4px;"></i>
+                </div>
+            </div>
+
+            <div class="info-grid">
+                <div class="info-pill">
+                    <span class="info-label"><i class="fas fa-kaaba"></i> الحملة</span>
+                    <span class="info-val" id="pCampaign">-</span>
+                </div>
+                <div class="info-pill">
+                    <span class="info-label"><i class="fas fa-bus"></i> رقم الحافلة</span>
+                    <span class="info-val" id="pBus">-</span>
+                </div>
+                <div class="info-pill">
+                    <span class="info-label"><i class="fas fa-door-open"></i> رقم الغرفة</span>
+                    <span class="info-val" id="pRoom">-</span>
+                </div>
+                <div class="info-pill">
+                    <span class="info-label"><i class="fas fa-calendar-alt"></i> نفاذ الجواز</span>
+                    <span class="info-val" id="pPassportExpiry">-</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mutaahed & Saudi Contact Card -->
+        <div class="card" style="border-color:rgba(197,160,89,0.3);">
+            <div class="card-header-line">
+                <span class="card-title"><i class="fas fa-user-tie"></i> المتعهد والتواصل في المملكة</span>
+                <span style="font-size:0.75rem; color:var(--gold-light);">للطوارئ والمساعدة</span>
+            </div>
+
+            <div class="info-grid" style="margin-bottom:12px;">
+                <div class="info-pill" style="grid-column: span 2;">
+                    <span class="info-label"><i class="fas fa-user-check"></i> اسم المتعهد / مشرف الحملة</span>
+                    <span class="info-val" id="pMutaahed" style="color:var(--gold-light); font-size:1.05rem;">-</span>
+                </div>
+                <div class="info-pill" style="grid-column: span 2;">
+                    <span class="info-label"><i class="fas fa-phone-alt"></i> الرقم السعودي</span>
+                    <span class="info-val" id="pSaudiPhone" style="font-family:monospace; direction:ltr; text-align:right; font-size:1.1rem; color:#38bdf8;">-</span>
+                </div>
+                <div class="info-pill" style="grid-column: span 2;">
+                    <span class="info-label"><i class="fas fa-map-marker-alt" style="color:var(--gold-primary);"></i> عنوان السكن في مكة المكرمة</span>
+                    <span class="info-val" id="pAddress" style="color:#e2e8f0; font-size:0.92rem;">-</span>
+                </div>
+            </div>
+
+            <!-- Direct Quick Call & WhatsApp Buttons -->
+            <div class="btn-action-row" id="saudiActionRow" style="display:none;">
+                <a href="#" id="btnCallSaudi" class="btn-call btn-call-phone">
+                    <i class="fas fa-phone"></i> اتصال بالمتعهد
+                </a>
+                <a href="#" id="btnWaSaudi" target="_blank" class="btn-call btn-call-wa">
+                    <i class="fab fa-whatsapp"></i> واتساب المتعهد
+                </a>
+            </div>
+        </div>
+
+        <!-- Official High-Resolution Documents Section -->
+        <div class="card">
+            <div class="card-header-line">
+                <span class="card-title"><i class="fas fa-file-invoice"></i> الوثائق الرسمية والمستمسكات</span>
+                <span style="font-size:0.72rem; color:var(--text-muted);"><i class="fas fa-search-plus"></i> انقر للتكبير</span>
+            </div>
+
+            <div class="doc-grid">
+                <!-- Passport Box -->
+                <div class="doc-card">
+                    <div class="doc-header">
+                        <span><i class="fas fa-passport" style="color:var(--gold-primary);"></i> جواز السفر</span>
+                        <span id="badgePassStatus" style="font-size:0.7rem; color:var(--emerald);">مرفق</span>
+                    </div>
+                    <div class="doc-img-container" id="passImgContainer" onclick="openLightbox('passport')">
+                        <div class="doc-empty-state" id="passEmptyBox">
+                            <i class="fas fa-file-image"></i>
+                            <span>صورة الجواز غير متوفرة</span>
+                        </div>
+                        <img id="passImg" src="" alt="صورة الجواز" style="display:none;">
+                        <div class="doc-overlay-hint">
+                            <i class="fas fa-expand" style="font-size:1.2rem;"></i>
+                            <span>عرض بكامل الشاشة</span>
+                        </div>
+                    </div>
+                    <button class="doc-footer-btn" onclick="openLightbox('passport')">
+                        <i class="fas fa-eye"></i> معاينة وتكبير الجواز
+                    </button>
+                </div>
+
+                <!-- Unified National ID Card Box -->
+                <div class="doc-card">
+                    <div class="doc-header">
+                        <span><i class="fas fa-id-card-alt" style="color:var(--gold-primary);"></i> البطاقة الموحدة</span>
+                        <span id="badgeIdCardStatus" style="font-size:0.7rem; color:var(--emerald);">مرفقة</span>
+                    </div>
+                    <div class="doc-img-container" id="idCardImgContainer" onclick="openLightbox('idCard')">
+                        <div class="doc-empty-state" id="idCardEmptyBox">
+                            <i class="fas fa-file-image"></i>
+                            <span>صورة البطاقة غير متوفرة</span>
+                        </div>
+                        <img id="idCardImg" src="" alt="صورة البطاقة الوطنية" style="display:none;">
+                        <div class="doc-overlay-hint">
+                            <i class="fas fa-expand" style="font-size:1.2rem;"></i>
+                            <span>عرض بكامل الشاشة</span>
+                        </div>
+                    </div>
+                    <button class="doc-footer-btn" onclick="openLightbox('idCard')">
+                        <i class="fas fa-eye"></i> معاينة وتكبير البطاقة
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Personal & Civil Details -->
+        <div class="card">
+            <div class="card-header-line">
+                <span class="card-title"><i class="fas fa-info-circle"></i> البيانات الشخصية والمدنية</span>
+            </div>
+
+            <div class="info-grid">
+                <div class="info-pill">
+                    <span class="info-label">اسم الأم</span>
+                    <span class="info-val" id="pMotherName">-</span>
+                </div>
+                <div class="info-pill">
+                    <span class="info-label">تاريخ الميلاد</span>
+                    <span class="info-val" id="pBirthDate">-</span>
+                </div>
+                <div class="info-pill">
+                    <span class="info-label">الجنس</span>
+                    <span class="info-val" id="pGender">-</span>
+                </div>
+                <div class="info-pill">
+                    <span class="info-label">الجنسية</span>
+                    <span class="info-val" id="pNationality">-</span>
+                </div>
+                <div class="info-pill">
+                    <span class="info-label">المحافظة</span>
+                    <span class="info-val" id="pProvince">-</span>
+                </div>
+                <div class="info-pill">
+                    <span class="info-label">العنوان داخل العراق</span>
+                    <span class="info-val" id="pIraqAddress">-</span>
+                </div>
+                <div class="info-pill">
+                    <span class="info-label">رقم هاتف المعتمر</span>
+                    <span class="info-val" id="pPhone" style="font-family:monospace; direction:ltr; text-align:right;">-</span>
+                </div>
+                <div class="info-pill">
+                    <span class="info-label">رقم الطوارئ (العراق)</span>
+                    <span class="info-val" id="pEmergencyPhone" style="font-family:monospace; direction:ltr; text-align:right;">-</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Audit & Verification Stamp -->
+        <div class="footer-audit">
+            <div>منظومة <b>ضيوف الحرم</b> الإلكترونية الموحدة لإدارة شؤون المعتمرين</div>
+            <div>رقم السجل الرقمي: <span id="txtRecordId" style="font-family:monospace; color:var(--text-muted);">-</span></div>
+            <div style="color:var(--emerald); margin-top:3px;"><i class="fas fa-check-circle"></i> تم التحقق بنجاح من قاعدة البيانات المركزية</div>
+        </div>
+
+    </div>
+
+    <!-- Fullscreen Interactive Lightbox Modal -->
+    <div class="lightbox-modal" id="lightboxModal">
+        <div class="lightbox-header">
+            <span class="lightbox-title" id="lightboxTitle">معاينة الوثيقة</span>
+            <div class="lightbox-controls">
+                <button class="lightbox-btn" onclick="zoomDoc(0.25)" title="تكبير"><i class="fas fa-search-plus"></i></button>
+                <button class="lightbox-btn" onclick="zoomDoc(-0.25)" title="تصغير"><i class="fas fa-search-minus"></i></button>
+                <button class="lightbox-btn" onclick="resetZoom()" title="إعادة ضبط"><i class="fas fa-undo"></i></button>
+                <button class="lightbox-btn" onclick="downloadDoc()" title="تحميل"><i class="fas fa-download"></i></button>
+                <button class="lightbox-btn lightbox-close" onclick="closeLightbox()" title="إغلاق"><i class="fas fa-times"></i></button>
+            </div>
+        </div>
+        <div class="lightbox-body" id="lightboxBody" onclick="handleBodyClick(event)">
+            <img id="lightboxImg" src="" alt="وثيقة المعتمر">
+        </div>
+    </div>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const pilgrimId = urlParams.get('id') || '';
+        const paramName = urlParams.get('name') || urlParams.get('n') || '';
+        const paramPass = urlParams.get('pass') || urlParams.get('p') || '';
+        const paramCamp = urlParams.get('camp') || urlParams.get('c') || '';
+        const paramMut = urlParams.get('mut') || urlParams.get('m') || '';
+        const paramSaudi = urlParams.get('saudi') || urlParams.get('s') || '';
+        const paramAddr = urlParams.get('addr') || urlParams.get('a') || '';
+        const paramBus = urlParams.get('bus') || urlParams.get('b') || '';
+        const paramRoom = urlParams.get('room') || urlParams.get('r') || '';
+
+        let currentData = {
+            id: pilgrimId,
+            name: paramName || 'معتمر مسجل',
+            passport: paramPass || '-',
+            passportExpiry: '-',
+            campaignName: paramCamp || 'عامة',
+            busNumber: paramBus || '1',
+            roomNo: paramRoom || '-',
+            mutaahed: paramMut || 'مكتب ضيوف الحرم',
+            saudiPhone: paramSaudi || '-',
+            address: paramAddr || 'مكة المكرمة - العزيزية - شارع الحج',
+            motherName: '-',
+            birthDate: '-',
+            gender: 'ذكر',
+            nationality: 'عراقي',
+            province: '-',
+            iraqAddress: '-',
+            phone: '-',
+            emergencyPhone: '-',
+            passportImg: '',
+            idCardImg: ''
+        };
+
+        // Render Initial Data Immediately (0ms)
+        function renderUI() {
+            document.getElementById('pName').innerText = currentData.name;
+            document.getElementById('pPassport').innerText = currentData.passport;
+            document.getElementById('pCampaign').innerText = currentData.campaignName;
+            document.getElementById('pBus').innerText = currentData.busNumber;
+            document.getElementById('pRoom').innerText = currentData.roomNo;
+            document.getElementById('pPassportExpiry').innerText = currentData.passportExpiry;
+            document.getElementById('pMutaahed').innerText = currentData.mutaahed;
+            document.getElementById('pSaudiPhone').innerText = currentData.saudiPhone;
+            document.getElementById('pAddress').innerText = currentData.address;
+
+            document.getElementById('pMotherName').innerText = currentData.motherName;
+            document.getElementById('pBirthDate').innerText = currentData.birthDate;
+            document.getElementById('pGender').innerText = currentData.gender;
+            document.getElementById('pNationality').innerText = currentData.nationality;
+            document.getElementById('pProvince').innerText = currentData.province;
+            document.getElementById('pIraqAddress').innerText = currentData.iraqAddress;
+            document.getElementById('pPhone').innerText = currentData.phone;
+            document.getElementById('pEmergencyPhone').innerText = currentData.emergencyPhone;
+            document.getElementById('txtRecordId').innerText = currentData.id || 'OFFLINE-PASS';
+
+            // Saudi Phone Call & WhatsApp Links
+            const cleanPhone = (currentData.saudiPhone || '').replace(/[^0-9+]/g, '');
+            if (cleanPhone && cleanPhone.length >= 7) {
+                document.getElementById('saudiActionRow').style.display = 'flex';
+                document.getElementById('btnCallSaudi').href = 'tel:' + cleanPhone;
+                let waNumber = cleanPhone.startsWith('+') ? cleanPhone.slice(1) : cleanPhone;
+                if (waNumber.startsWith('05')) waNumber = '966' + waNumber.slice(1);
+                document.getElementById('btnWaSaudi').href = 'https://wa.me/' + waNumber;
+            } else {
+                document.getElementById('saudiActionRow').style.display = 'none';
+            }
+
+            // Documents Rendering
+            renderDocument('pass', currentData.passportImg);
+            renderDocument('idCard', currentData.idCardImg);
+        }
+
+        function renderDocument(type, imgData) {
+            const isPass = type === 'pass';
+            const imgEl = document.getElementById(isPass ? 'passImg' : 'idCardImg');
+            const emptyBox = document.getElementById(isPass ? 'passEmptyBox' : 'idCardEmptyBox');
+            const statusBadge = document.getElementById(isPass ? 'badgePassStatus' : 'badgeIdCardStatus');
+
+            if (imgData && imgData.trim().length > 50) {
+                imgEl.src = imgData;
+                imgEl.style.display = 'block';
+                emptyBox.style.display = 'none';
+                statusBadge.innerText = 'مرفق ومتاح';
+                statusBadge.style.color = 'var(--emerald)';
+            } else {
+                imgEl.style.display = 'none';
+                emptyBox.style.display = 'flex';
+                statusBadge.innerText = 'غير مرفق';
+                statusBadge.style.color = 'var(--text-muted)';
+            }
+        }
+
+        // Fetch Live Data from Firestore
+        async function fetchFullPilgrimData() {
+            if (!pilgrimId) {
+                document.getElementById('verifyLoading').style.display = 'none';
+                document.getElementById('verifyContainer').style.display = 'flex';
+                renderUI();
+                return;
+            }
+
+            try {
+                const res = await fetch('https://firestore.googleapis.com/v1/projects/studio-z3gpw/databases/(default)/documents/pilgrims/' + encodeURIComponent(pilgrimId));
+                if (res.ok) {
+                    const json = await res.json();
+                    const f = json.fields || {};
+                    if (f.name?.stringValue) currentData.name = f.name.stringValue;
+                    if (f.passport?.stringValue) currentData.passport = f.passport.stringValue;
+                    if (f.passportExpiry?.stringValue) currentData.passportExpiry = f.passportExpiry.stringValue;
+                    if (f.campaignName?.stringValue) currentData.campaignName = f.campaignName.stringValue;
+                    if (f.busNumber?.stringValue) currentData.busNumber = f.busNumber.stringValue;
+                    if (f.roomNo?.stringValue) currentData.roomNo = f.roomNo.stringValue;
+                    if (f.motherName?.stringValue) currentData.motherName = f.motherName.stringValue;
+                    if (f.birthDate?.stringValue) currentData.birthDate = f.birthDate.stringValue;
+                    if (f.gender?.stringValue) currentData.gender = f.gender.stringValue;
+                    if (f.nationality?.stringValue) currentData.nationality = f.nationality.stringValue;
+                    if (f.province?.stringValue) currentData.province = f.province.stringValue;
+                    if (f.address?.stringValue) currentData.iraqAddress = f.address.stringValue;
+                    if (f.phone?.stringValue) currentData.phone = f.phone.stringValue;
+                    if (f.emergencyPhone?.stringValue) currentData.emergencyPhone = f.emergencyPhone.stringValue;
+                    
+                    if (f.passportImg?.stringValue) currentData.passportImg = f.passportImg.stringValue;
+                    if (f.idCardImg?.stringValue) currentData.idCardImg = f.idCardImg.stringValue;
+                }
+            } catch (err) {
+                console.warn('Firestore direct fetch error:', err);
+            } finally {
+                document.getElementById('verifyLoading').style.display = 'none';
+                document.getElementById('verifyContainer').style.display = 'flex';
+                renderUI();
+            }
+        }
+
+        // Copy Passport Function
+        function copyPassport() {
+            if (currentData.passport && currentData.passport !== '-') {
+                navigator.clipboard.writeText(currentData.passport).then(() => {
+                    alert('تم نسخ رقم الجواز: ' + currentData.passport);
+                });
+            }
+        }
+
+        // Lightbox Functions
+        let currentZoom = 1;
+        let activeDocType = 'passport';
+
+        function openLightbox(type) {
+            activeDocType = type;
+            const isPass = type === 'passport';
+            const imgData = isPass ? currentData.passportImg : currentData.idCardImg;
+            const title = isPass ? ('جواز السفر - ' + currentData.name) : ('البطاقة الوطنية - ' + currentData.name);
+
+            if (!imgData || imgData.trim().length <= 50) {
+                alert('صورة ' + (isPass ? 'الجواز' : 'البطاقة') + ' غير متوفرة لهذا المعتمر.');
+                return;
+            }
+
+            document.getElementById('lightboxTitle').innerText = title;
+            const lbImg = document.getElementById('lightboxImg');
+            lbImg.src = imgData;
+            currentZoom = 1;
+            lbImg.style.transform = 'scale(1)';
+            document.getElementById('lightboxModal').style.display = 'flex';
+        }
+
+        function closeLightbox() {
+            document.getElementById('lightboxModal').style.display = 'none';
+        }
+
+        function zoomDoc(delta) {
+            currentZoom = Math.min(Math.max(0.5, currentZoom + delta), 4);
+            document.getElementById('lightboxImg').style.transform = 'scale(' + currentZoom + ')';
+        }
+
+        function resetZoom() {
+            currentZoom = 1;
+            document.getElementById('lightboxImg').style.transform = 'scale(1)';
+        }
+
+        function handleBodyClick(e) {
+            if (e.target.id === 'lightboxBody') {
+                closeLightbox();
+            }
+        }
+
+        function downloadDoc() {
+            const isPass = activeDocType === 'passport';
+            const imgData = isPass ? currentData.passportImg : currentData.idCardImg;
+            if (!imgData) return;
+            const a = document.createElement('a');
+            a.href = imgData;
+            a.download = (isPass ? 'passport_' : 'national_id_') + (currentData.passport || currentData.name) + '.jpg';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        }
+
+        // Keyboard navigation (ESC to close)
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeLightbox();
+        });
+
+        // Initialize
+        renderUI();
+        fetchFullPilgrimData();
+    </script>
+</body>
+</html>

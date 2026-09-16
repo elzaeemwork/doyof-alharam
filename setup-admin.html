@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إعداد حساب المدير — ضيوف الحرم</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #f8fafc;
+        }
+        .setup-card {
+            background: rgba(255,255,255,0.06);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(197, 160, 89, 0.3);
+            border-radius: 20px;
+            padding: 40px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+        }
+        .setup-icon {
+            width: 70px; height: 70px;
+            background: linear-gradient(135deg, #c5a059, #a9823b);
+            border-radius: 18px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 2em; margin: 0 auto 20px;
+        }
+        h1 {
+            text-align: center; font-size: 1.4em;
+            background: linear-gradient(135deg, #c5a059, #f5eedf);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            margin-bottom: 8px;
+        }
+        .subtitle { text-align: center; color: #94a3b8; font-size: 0.88em; margin-bottom: 30px; }
+        .form-group { margin-bottom: 18px; }
+        label { display: block; font-size: 0.85em; font-weight: 600; color: #c5a059; margin-bottom: 6px; }
+        input {
+            width: 100%; padding: 12px 16px; border-radius: 10px;
+            border: 1px solid rgba(197, 160, 89, 0.3);
+            background: rgba(255,255,255,0.06); color: #f8fafc;
+            font-family: inherit; font-size: 0.95em;
+            transition: border-color 0.2s;
+        }
+        input:focus { outline: none; border-color: #c5a059; box-shadow: 0 0 0 3px rgba(197, 160, 89, 0.15); }
+        .btn-setup {
+            width: 100%; padding: 14px; border: none; border-radius: 12px;
+            background: linear-gradient(135deg, #c5a059, #a9823b);
+            color: white; font-family: inherit; font-size: 1em; font-weight: 700;
+            cursor: pointer; transition: all 0.3s; margin-top: 10px;
+        }
+        .btn-setup:hover { filter: brightness(1.1); transform: translateY(-1px); box-shadow: 0 6px 20px rgba(197, 160, 89, 0.4); }
+        .btn-setup:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+        .log-area {
+            margin-top: 20px; padding: 15px; border-radius: 10px;
+            background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1);
+            font-size: 0.82em; line-height: 1.8; max-height: 200px; overflow-y: auto;
+            display: none;
+        }
+        .log-success { color: #10b981; }
+        .log-error { color: #ef4444; }
+        .log-info { color: #3b82f6; }
+        .log-warn { color: #f59e0b; }
+        .result-box {
+            margin-top: 20px; padding: 20px; border-radius: 12px;
+            background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3);
+            display: none;
+        }
+        .result-box h3 { color: #10b981; font-size: 1em; margin-bottom: 12px; }
+        .result-box .cred { background: rgba(0,0,0,0.3); padding: 8px 14px; border-radius: 8px; margin: 6px 0; font-size: 0.88em; direction: ltr; text-align: left; }
+        .result-box .cred span { color: #c5a059; }
+    </style>
+</head>
+<body>
+    <div class="setup-card">
+        <div class="setup-icon">🔐</div>
+        <h1>إعداد حساب المدير الأول</h1>
+        <p class="subtitle">سيتم إنشاء حساب المدير الرئيسي للنظام. هذه العملية تُنفذ مرة واحدة فقط.</p>
+
+        <div class="form-group">
+            <label>اسم المدير</label>
+            <input type="text" id="adminName" value="المدير العام" placeholder="اسم المدير">
+        </div>
+        <div class="form-group">
+            <label>البريد الإلكتروني</label>
+            <input type="email" id="adminEmail" value="admin@doyofalharam.com" placeholder="admin@example.com" dir="ltr">
+        </div>
+        <div class="form-group">
+            <label>كلمة المرور</label>
+            <input type="text" id="adminPassword" value="Admin@2026#Doyof" placeholder="كلمة مرور قوية" dir="ltr">
+        </div>
+
+        <button class="btn-setup" id="setupBtn" onclick="runSetup()">
+            ⚡ إنشاء حساب المدير
+        </button>
+
+        <div class="log-area" id="logArea"></div>
+        <div class="result-box" id="resultBox">
+            <h3>✅ تم إنشاء الحساب بنجاح!</h3>
+            <div class="cred"><span>البريد:</span> <span id="resEmail"></span></div>
+            <div class="cred"><span>كلمة المرور:</span> <span id="resPass"></span></div>
+            <p style="color:#f59e0b; font-size:0.82em; margin-top:12px;">⚠️ احفظ بيانات الدخول واحذف هذا الملف بعد الانتهاء</p>
+        </div>
+    </div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+    import { getFirestore, doc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyDvSn1mrIyGG0qZ6GeKk1HQyzTv51kYxA0",
+        authDomain: "studio-z3gpw.firebaseapp.com",
+        projectId: "studio-z3gpw",
+        storageBucket: "studio-z3gpw.firebasestorage.app",
+        messagingSenderId: "481202908851",
+        appId: "1:481202908851:web:cb7c537a0f3714fe7f8ac6"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    function log(msg, type = 'info') {
+        const area = document.getElementById('logArea');
+        area.style.display = 'block';
+        area.innerHTML += `<div class="log-${type}">${msg}</div>`;
+        area.scrollTop = area.scrollHeight;
+    }
+
+    window.runSetup = async function() {
+        const name = document.getElementById('adminName').value.trim();
+        const email = document.getElementById('adminEmail').value.trim();
+        const password = document.getElementById('adminPassword').value.trim();
+        const btn = document.getElementById('setupBtn');
+
+        if (!name || !email || !password) {
+            log('❌ يرجى ملء جميع الحقول', 'error');
+            return;
+        }
+        if (password.length < 6) {
+            log('❌ كلمة المرور يجب أن تكون 6 أحرف على الأقل', 'error');
+            return;
+        }
+
+        btn.disabled = true;
+        btn.textContent = '⏳ جاري الإنشاء...';
+
+        try {
+            log('📧 إنشاء حساب المصادقة...', 'info');
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+            const uid = userCredential.user.uid;
+            log(`✅ تم إنشاء الحساب — UID: ${uid}`, 'success');
+
+            log('📝 حفظ بيانات المستخدم في Firestore...', 'info');
+            await setDoc(doc(db, 'users', uid), {
+                email: email,
+                displayName: name,
+                role: 'admin',
+                isActive: true,
+                createdAt: serverTimestamp(),
+                createdBy: 'system-setup',
+                lastLogin: null,
+                permissions: {
+                    canDelete: true,
+                    canExport: true,
+                    canEditPrices: true,
+                    canManageUsers: true
+                }
+            });
+            log('✅ تم حفظ بيانات المستخدم', 'success');
+            log('🎉 اكتمل الإعداد بنجاح!', 'success');
+
+            document.getElementById('resultBox').style.display = 'block';
+            document.getElementById('resEmail').textContent = email;
+            document.getElementById('resPass').textContent = password;
+            btn.textContent = '✅ تم الإنشاء';
+        } catch (error) {
+            if (error.code === 'auth/email-already-in-use') {
+                log('ℹ️ هذا البريد مسجل مسبقاً. يمكنك تسجيل الدخول مباشرة.', 'warn');
+            } else {
+                log(`❌ خطأ: ${error.message}`, 'error');
+            }
+            btn.disabled = false;
+            btn.textContent = '⚡ إنشاء حساب المدير';
+        }
+    };
+</script>
+</body>
+</html>
