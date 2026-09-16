@@ -3426,7 +3426,7 @@
 
         <div class="splash-footer-tag">
             <span class="splash-dot"></span>
-            <span>الإصدار المعتمد v2.0 • جميع الحقوق محفوظة للمطور</span>
+            <span>الإصدار المعتمد v2.0.1 • جميع الحقوق محفوظة للمطور</span>
         </div>
     </div>
 </div>
@@ -3557,7 +3557,7 @@
             <i class="fas fa-sign-out-alt"></i> <span>تسجيل الخروج</span>
         </button>
         <div class="sidebar-footer-meta">
-            <span class="meta-badge">v2.0</span>
+            <span class="meta-badge">v2.0.1</span>
             <span>•</span>
             <span class="meta-dev">النسخة المعتمدة</span>
         </div>
@@ -6095,6 +6095,7 @@
             }
             populateCampaignsDropdown();
             if (typeof populateModalCampaignsDropdown === 'function') populateModalCampaignsDropdown();
+            if (typeof populateAllCampaignDropdowns === 'function') populateAllCampaignDropdowns();
             updateStats();
             checkHighDebts();
             renderTable();
@@ -6106,6 +6107,7 @@
             }
             populateCampaignsDropdown();
             if (typeof populateModalCampaignsDropdown === 'function') populateModalCampaignsDropdown();
+            if (typeof populateAllCampaignDropdowns === 'function') populateAllCampaignDropdowns();
             updateStats();
             checkHighDebts();
             renderTable();
@@ -7522,11 +7524,19 @@
             renderFamiliesSection();
         } else if (tab === 'hotels') {
             document.getElementById('section-hotels').classList.add('active');
-            populateCampaignsDropdown();
+            if (typeof populateAllCampaignDropdowns === 'function') populateAllCampaignDropdowns();
+            const hotelSel = document.getElementById('hotelCampaignSelect');
+            if (hotelSel && !hotelSel.value && hotelSel.options.length > 1) {
+                hotelSel.selectedIndex = 1;
+            }
             renderHotelsSection();
         } else if (tab === 'buses') {
             document.getElementById('section-buses').classList.add('active');
-            populateCampaignsDropdown();
+            if (typeof populateAllCampaignDropdowns === 'function') populateAllCampaignDropdowns();
+            const busSel = document.getElementById('busCampaignSelect');
+            if (busSel && !busSel.value && busSel.options.length > 1) {
+                busSel.selectedIndex = 1;
+            }
             renderBusesSection();
         } else if (tab === 'visas') {
             document.getElementById('section-visas').classList.add('active');
@@ -9251,9 +9261,48 @@
         }
     }
 
-    function populateAllCampaignDropdowns() {
+    function getAllCampaignsUnifiedMap() {
+        const map = new Map();
+
+        // 1. From campaignsDB
+        (campaignsDB || []).forEach(c => {
+            if (c && c.name && c.name.trim()) {
+                const name = c.name.trim();
+                map.set(name, {
+                    name: name,
+                    count: 0,
+                    meta: c.departureDate || c.month || ''
+                });
+            }
+        });
+
+        // 2. From mainDB
+        (mainDB || []).forEach(p => {
+            if (p && p.campaignName && p.campaignName.trim()) {
+                const name = p.campaignName.trim();
+                if (!map.has(name)) {
+                    map.set(name, {
+                        name: name,
+                        count: 0,
+                        meta: p.month || p.date || ''
+                    });
+                }
+                const entry = map.get(name);
+                entry.count++;
+                if (!entry.meta && (p.month || p.date)) {
+                    entry.meta = p.month || p.date;
+                }
+            }
+        });
+
+        return map;
+    }
+
+    window.populateAllCampaignDropdowns = function populateAllCampaignDropdowns() {
         populateCampaignsDropdown();
+        const campaignsMap = getAllCampaignsUnifiedMap();
         const selectors = ['f-campaign', 'hotelCampaignSelect', 'busCampaignSelect', 'badgeCampaignSelect', 'exp-campaign'];
+
         selectors.forEach(id => {
             const el = document.getElementById(id);
             if (!el) return;
@@ -9265,14 +9314,19 @@
             else if (id === 'hotelCampaignSelect' || id === 'busCampaignSelect') html = '<option value="">اختر الحملة...</option>';
             else html = '<option value="">اختر الحملة أو اكتب اسمها...</option>';
 
-            campaignsDB.forEach(c => {
-                html += `<option value="${c.name}">${c.name} (${c.departureDate || c.month || '-'})</option>`;
+            campaignsMap.forEach((info, name) => {
+                const countBadge = info.count > 0 ? ` (${info.count} معتمر)` : '';
+                const metaBadge = info.meta ? ` - ${info.meta}` : '';
+                const safeVal = String(name).replace(/"/g, '&quot;');
+                html += `<option value="${safeVal}">${safeVal}${countBadge}${metaBadge}</option>`;
             });
 
             el.innerHTML = html;
-            if (currentVal) el.value = currentVal;
+            if (currentVal && el.querySelector(`option[value="${currentVal.replace(/"/g, '\\"')}"]`)) {
+                el.value = currentVal;
+            }
         });
-    }
+    };
 
     window.renderCampaignsSection = () => {
         const grid = document.getElementById('campaignsGrid');
@@ -12538,7 +12592,7 @@
        ═══════════════════════════════════════════════════════ */
     (function initLiveUpdateEngine() {
         const GITHUB_REPO = 'elzaeemwork/doyof-alharam';
-        const APP_CURRENT_VERSION = '2.0.0';
+        const APP_CURRENT_VERSION = '2.0.1';
 
         // 1. Desktop (Electron) Update Handler
         if (typeof require !== 'undefined') {
