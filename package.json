@@ -11,7 +11,7 @@
     "build:portable": "electron-builder build --win portable",
     "build:installer": "electron-builder build --win nsis",
     "build:all": "electron-builder build --win nsis portable",
-    "publish:release": "electron-builder build --win --publish always"
+    "publish:release": "node publish-release.js"
   },
   "build": {
     "appId": "com.doyofalharam.app",
